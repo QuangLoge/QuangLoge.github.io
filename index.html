@@ -269,11 +269,11 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
     }
 
-    /* =================== REM CHIBI ANIME REAL =================== */
+    /* =================== REM CHIBI ANIME =================== */
     .rem-wrapper {
       position: fixed;
-      bottom: 8px;
-      right: 12px;
+      bottom: 10px;
+      right: 14px;
       z-index: 99;
       display: flex;
       flex-direction: column;
@@ -282,7 +282,6 @@
       user-select: none;
     }
 
-    /* Bong bóng thoại anime */
     .rem-dialog {
       opacity: 0;
       transform: translateY(8px) scale(0.9);
@@ -318,9 +317,8 @@
       border-color: rgba(15, 23, 42, 0.92) transparent;
     }
 
-    /* Khối nhân vật cử động đung đưa nhún nhảy */
     .rem-character {
-      width: 90px;
+      width: 95px;
       position: relative;
       animation: remFloat 3s ease-in-out infinite;
       transform-origin: bottom center;
@@ -351,11 +349,11 @@
       width: 100%;
       height: auto;
       display: block;
+      border-radius: 12px;
       filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
       pointer-events: none;
     }
 
-    /* Hiệu ứng tim bay khi bấm */
     .heart-float {
       position: absolute;
       font-size: 1.2rem;
@@ -371,17 +369,14 @@
 </head>
 <body>
 
-  <!-- Đốm sáng nền -->
   <div class="bg-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
 
-  <!-- Hoa anh đào rơi liên tục -->
   <canvas id="sakura-canvas"></canvas>
 
-  <!-- Nút Nhạc -->
   <div class="music-control" id="musicBtn" onclick="toggleAudio()">
     🎵
   </div>
@@ -410,64 +405,24 @@
     </div>
   </div>
 
-  <!-- REM CHIBI ANIME REAL -->
+  <!-- REM CHIBI -->
   <div class="rem-wrapper" id="remWrapper" onclick="interactRem(event)">
     <div class="rem-dialog" id="remDialog">ゼロから始めましょう！✨</div>
     <div class="rem-character" id="remChar">
-      <!-- Ảnh Rem chibi nét vẽ anime chính hiệu siêu đáng yêu -->
+      <!-- File ảnh bạn đã upload lên repo -->
       <img src="IMG_0436.jpeg" alt="Rem Chibi" class="rem-img">
     </div>
   </div>
 
   <script>
-    /* =================== REM INTERACTION (TIẾNG NHẬT ANIME) =================== */
-    const remQuotes = [
-      "ここから、始めましょう。ゼロから！✨",
-      "レムは、スバルくんを愛しています 💙",
-      "スバルくんは、レムの英雄なんです！💖",
-      "鬼がかってますね！🌸",
-      "言質、とりました！(//▽//)",
-      "はい！レムにお任せください ✨",
-      "諦めるのは、簡単です。"
-    ];
-
-    let quoteTimeout = null;
-
-    function interactRem(e) {
-      const remChar = document.getElementById('remChar');
-      const remDialog = document.getElementById('remDialog');
-      const remWrapper = document.getElementById('remWrapper');
-
-      // Nhảy cẫng lên
-      remChar.classList.remove('bounce');
-      void remChar.offsetWidth;
-      remChar.classList.add('bounce');
-
-      // Tạo hiệu ứng tim hoặc cánh hoa bay lên
-      const heart = document.createElement('span');
-      heart.className = 'heart-float';
-      const icons = ['💙', '✨', '🌸', '💖'];
-      heart.innerText = icons[Math.floor(Math.random() * icons.length)];
-      heart.style.left = (Math.random() * 40 + 20) + 'px';
-      heart.style.top = '10px';
-      remWrapper.appendChild(heart);
-      setTimeout(() => heart.remove(), 800);
-
-      // Đổi câu thoại tiếng Nhật
-      const randomQuote = remQuotes[Math.floor(Math.random() * remQuotes.length)];
-      remDialog.innerText = randomQuote;
-      remDialog.classList.add('show');
-
-      clearTimeout(quoteTimeout);
-      quoteTimeout = setTimeout(() => {
-        remDialog.classList.remove('show');
-      }, 2600);
-    }
-
-    /* ÂM THANH */
+    /* =================== ÂM THANH & GIỌNG NÓI REM =================== */
     const audio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     let hasInteracted = false;
+    let normalVolume = 0.7; // Âm lượng nhạc bình thường
+    let duckedVolume = 0.15; // Âm lượng nhạc khi Rem nói (nhỏ lại)
+
+    audio.volume = normalVolume;
 
     function playAudio() {
       audio.play().then(() => {
@@ -500,7 +455,81 @@
       }
     }, { once: true });
 
-    /* HOA ANH ĐÀO RƠI LIÊN TỤC */
+    /* =================== TƯƠNG TÁC & GIỌNG NÓI ANIME =================== */
+    const remQuotes = [
+      { text: "ここから、始めましょう。ゼロから！✨", speak: "ここから、始めましょう。ゼロから！" },
+      { text: "レムは、スバルくんを愛しています 💙", speak: "レムは、スバルくんを愛しています。" },
+      { text: "スバルくんは、レムの英雄なんです！💖", speak: "スバルくんは、レムの英雄なんです！" },
+      { text: "鬼がかってますね！🌸", speak: "鬼がかってますね！" },
+      { text: "言質、とりました！(//▽//)", speak: "言質、とりました！" },
+      { text: "はい！レムにお任せください ✨", speak: "はい！レムにお任せください。" },
+      { text: "諦めるのは、簡単です。", speak: "諦めるのは、簡単です。" }
+    ];
+
+    let quoteTimeout = null;
+
+    function interactRem(e) {
+      const remChar = document.getElementById('remChar');
+      const remDialog = document.getElementById('remDialog');
+      const remWrapper = document.getElementById('remWrapper');
+
+      // Nhảy cẫng lên
+      remChar.classList.remove('bounce');
+      void remChar.offsetWidth;
+      remChar.classList.add('bounce');
+
+      // Tạo icon tim bay
+      const heart = document.createElement('span');
+      heart.className = 'heart-float';
+      const icons = ['💙', '✨', '🌸', '💖'];
+      heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+      heart.style.left = (Math.random() * 40 + 20) + 'px';
+      heart.style.top = '10px';
+      remWrapper.appendChild(heart);
+      setTimeout(() => heart.remove(), 800);
+
+      // Chọn câu thoại
+      const quoteObj = remQuotes[Math.floor(Math.random() * remQuotes.length)];
+      remDialog.innerText = quoteObj.text;
+      remDialog.classList.add('show');
+
+      clearTimeout(quoteTimeout);
+      quoteTimeout = setTimeout(() => {
+        remDialog.classList.remove('show');
+      }, 3000);
+
+      // PHÁT GIỌNG NÓI TIẾNG NHẬT VÀ TỰ ĐỘNG GIẢM NHẠC NỀN
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Dừng câu trước nếu còn đang nói
+
+        // Giảm nhạc nền xuống nhỏ để nghe rõ giọng Rem
+        if (!audio.paused) {
+          audio.volume = duckedVolume;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(quoteObj.speak);
+        utterance.lang = 'ja-JP'; // Giọng tiếng Nhật
+        utterance.pitch = 1.6;    // Tone giọng nữ cao, trong trẻo anime cute
+        utterance.rate = 1.05;    // Tốc độ nói tự nhiên
+
+        // Khi Rem nói xong -> Nhạc nền tự to trở lại như cũ
+        utterance.onend = function() {
+          if (!audio.paused) {
+            audio.volume = normalVolume;
+          }
+        };
+
+        utterance.onerror = function() {
+          if (!audio.paused) {
+            audio.volume = normalVolume;
+          }
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /* =================== HOA ANH ĐÀO RƠI LIÊN TỤC =================== */
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
 
