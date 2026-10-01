@@ -10,71 +10,148 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: radial-gradient(circle at top, #1e293b, #090d16);
+      background-color: #0b0f19;
       color: #f8fafc;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 24px;
-      overflow-x: hidden;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background phát sáng tạo độ tương phản cho Liquid Glass */
+    .bg-blobs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(80px);
+      opacity: 0.65;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatBlobs 12s infinite alternate ease-in-out;
+    }
+
+    .blob-1 {
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, #38bdf8, #0284c7);
+      top: 10%;
+      left: 15%;
+    }
+
+    .blob-2 {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, #f43f5e, #ec4899);
+      bottom: 15%;
+      right: 10%;
+      animation-delay: -5s;
+    }
+
+    .blob-3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #818cf8, #6366f1);
+      top: 50%;
+      left: 40%;
+      animation-delay: -8s;
+    }
+
+    @keyframes floatBlobs {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, 40px) scale(1.15); }
+      100% { transform: translate(-30px, -30px) scale(0.95); }
+    }
+
+    /* Canvas Hoa anh đào rơi */
+    #sakura-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
     }
 
     .container {
       width: 100%;
-      max-width: 400px;
+      max-width: 390px;
       text-align: center;
+      position: relative;
+      z-index: 10;
     }
 
-    /* Hiệu ứng xuất hiện */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* Nút Đĩa Nhạc Xoay */
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      z-index: 100;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Hiệu ứng đĩa nhạc xoay tròn */
-    @keyframes rotateDisc {
+    .music-control:active {
+      transform: scale(0.9);
+    }
+
+    .music-control.playing {
+      animation: rotateVinyl 4s linear infinite;
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    @keyframes rotateVinyl {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    /* Nút điều khiển nhạc góc trên */
-    .music-control {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 100;
-    }
-
-    .music-control.playing {
-      animation: rotateDisc 4s linear infinite;
-      border-color: #38bdf8;
+    /* Animation Xuất hiện mềm mượt */
+    @keyframes springIn {
+      0% {
+        opacity: 0;
+        transform: translateY(45px) scale(0.92);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.01);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .avatar-wrapper {
-      position: relative;
       display: inline-block;
-      animation: fadeInUp 0.8s ease backwards;
+      position: relative;
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.1s;
     }
 
@@ -82,83 +159,137 @@
       width: 110px;
       height: 110px;
       border-radius: 50%;
-      border: 3px solid #38bdf8;
+      border: 2px solid rgba(255, 255, 255, 0.5);
       object-fit: cover;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
-      transition: transform 0.3s ease;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.45);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .avatar:hover {
-      transform: scale(1.05);
+      transform: scale(1.08) rotate(2deg);
     }
 
     h1 {
-      font-size: 1.6rem;
-      margin-top: 14px;
+      font-size: 1.65rem;
+      margin-top: 16px;
       margin-bottom: 6px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      animation: fadeInUp 0.8s ease backwards;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.25s;
     }
 
     p.bio {
       font-size: 0.95rem;
-      color: #94a3b8;
-      margin-bottom: 28px;
-      animation: fadeInUp 0.8s ease backwards;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 30px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.4s;
     }
 
     .links {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    .link-btn {
+    /* Hiệu ứng LIQUID GLASS (Kính Thủy Tinh Lỏng) */
+    .liquid-glass-btn {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 20px;
-      border-radius: 14px;
+      gap: 10px;
+      padding: 18px 24px;
+      border-radius: 20px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: #ffffff;
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Cấu trúc kính lỏng siêu mượt */
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+      
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Vệt sáng lỏng chuyển động quét qua liên tục */
+    .liquid-glass-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -80%;
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(
+        60deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.12) 30%, 
+        rgba(255, 255, 255, 0.35) 50%, 
+        rgba(255, 255, 255, 0.12) 70%, 
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: liquidSheen 4.5s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes liquidSheen {
+      0% { left: -80%; }
+      35% { left: 140%; }
+      100% { left: 140%; }
     }
 
     .btn-fb {
-      animation: fadeInUp 0.8s ease backwards;
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.55s;
     }
 
     .btn-tele {
-      animation: fadeInUp 0.8s ease backwards;
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.7s;
     }
 
-    .link-btn:hover, .link-btn:active {
-      transform: translateY(-3px) scale(1.02);
-      background: rgba(56, 189, 248, 0.15);
-      border-color: #38bdf8;
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+    .liquid-glass-btn:hover, .liquid-glass-btn:active {
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 
+        0 15px 35px rgba(56, 189, 248, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 10px rgba(56, 189, 248, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
     }
   </style>
 </head>
 <body>
 
-  <!-- Nút Bật/Tắt Nhạc -->
+  <!-- Đốm sáng chuyển động cho kính khúc xạ -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Lớp cánh hoa anh đào bay liên tục -->
+  <canvas id="sakura-canvas"></canvas>
+
+  <!-- Nút Nhạc -->
   <div class="music-control" id="musicBtn" onclick="toggleAudio()">
     🎵
   </div>
 
-  <!-- File nhạc nền (bạn có thể thay link mp3 khác vào src nếu muốn) -->
+  <!-- Nhạc nền -->
   <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
   </audio>
@@ -169,22 +300,23 @@
     </div>
 
     <h1>Lê Hữu Quang</h1>
-    <p class="bio">Welcome to my profile ✨</p>
+    <p class="bio">Welcome to my space ✨</p>
 
     <div class="links">
-      <!-- Thay link Facebook thực tế của bạn vào href -->
-      <a href="https://facebook.com" target="_blank" class="link-btn btn-fb">
-        Facebook
+      <!-- Thay link Facebook của bạn vào href -->
+      <a href="https://facebook.com" target="_blank" class="liquid-glass-btn btn-fb">
+        <span>Facebook</span>
       </a>
 
-      <!-- Thay username Telegram của bạn vào href (dạng https://t.me/ten_username) -->
-      <a href="https://t.me/" target="_blank" class="link-btn btn-tele">
-        Telegram
+      <!-- Thay username Telegram của bạn vào href -->
+      <a href="https://t.me/" target="_blank" class="liquid-glass-btn btn-tele">
+        <span>Telegram</span>
       </a>
     </div>
   </div>
 
   <script>
+    /* =================== ÂM THANH =================== */
     const audio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     let hasInteracted = false;
@@ -206,7 +338,6 @@
       }
     }
 
-    // Tự động phát khi người dùng chạm bất kỳ đâu vào màn hình lần đầu
     document.addEventListener('touchstart', function() {
       if (!hasInteracted) {
         playAudio();
@@ -220,6 +351,84 @@
         hasInteracted = true;
       }
     }, { once: true });
+
+    /* =================== HOA ANH ĐÀO RƠI LIÊN TỤC =================== */
+    const canvas = document.getElementById('sakura-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const petalCount = 35;
+    const petals = [];
+
+    class Petal {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * width;
+        this.y = init ? Math.random() * height : -20;
+        this.size = Math.random() * 9 + 8;
+        this.speedY = Math.random() * 1.4 + 1.1;
+        this.speedX = Math.random() * 1.5 - 0.75;
+        this.angle = Math.random() * 360;
+        this.spin = (Math.random() - 0.5) * 1.8;
+        this.flip = Math.random();
+        this.flipSpeed = Math.random() * 0.02 + 0.01;
+        this.color = Math.random() > 0.4 ? 'rgba(255, 183, 197, ' : 'rgba(255, 218, 224, ';
+        this.alpha = Math.random() * 0.4 + 0.55;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.y * 0.008) * 0.7;
+        this.angle += this.spin;
+        this.flip += this.flipSpeed;
+
+        if (this.y > height + 25 || this.x < -30 || this.x > width + 30) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.angle * Math.PI) / 180);
+        ctx.scale(1, Math.sin(this.flip));
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+        ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+        ctx.fillStyle = this.color + this.alpha + ')';
+        ctx.shadowColor = 'rgba(255, 183, 197, 0.4)';
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < petalCount; i++) {
+      petals.push(new Petal());
+    }
+
+    function animateSakura() {
+      ctx.clearRect(0, 0, width, height);
+      petals.forEach(petal => {
+        petal.update();
+        petal.draw();
+      });
+      requestAnimationFrame(animateSakura);
+    }
+
+    animateSakura();
   </script>
 
 </body>
