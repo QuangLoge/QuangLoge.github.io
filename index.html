@@ -25,7 +25,7 @@
       position: relative;
     }
 
-    /* Background phát sáng tạo độ tương phản cho Liquid Glass */
+    /* Đốm sáng chuyển động khúc xạ cho Liquid Glass */
     .bg-blobs {
       position: fixed;
       top: 0;
@@ -132,7 +132,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Animation Xuất hiện mềm mượt */
+    /* Hiệu ứng xuất hiện */
     @keyframes springIn {
       0% {
         opacity: 0;
@@ -195,7 +195,7 @@
       gap: 16px;
     }
 
-    /* Hiệu ứng LIQUID GLASS (Kính Thủy Tinh Lỏng) */
+    /* Hiệu ứng LIQUID GLASS */
     .liquid-glass-btn {
       position: relative;
       display: flex;
@@ -209,7 +209,6 @@
       font-size: 1.05rem;
       color: #ffffff;
       
-      /* Cấu trúc kính lỏng siêu mượt */
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -224,7 +223,7 @@
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Vệt sáng lỏng chuyển động quét qua liên tục */
+    /* Vệt sáng quét mượt */
     .liquid-glass-btn::before {
       content: '';
       position: absolute;
@@ -274,14 +273,14 @@
 </head>
 <body>
 
-  <!-- Đốm sáng chuyển động cho kính khúc xạ -->
+  <!-- Đốm sáng nền -->
   <div class="bg-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
 
-  <!-- Lớp cánh hoa anh đào bay liên tục -->
+  <!-- Hoa anh đào rơi liên tục -->
   <canvas id="sakura-canvas"></canvas>
 
   <!-- Nút Nhạc -->
@@ -289,7 +288,7 @@
     🎵
   </div>
 
-  <!-- Nhạc nền -->
+  <!-- Nhạc nền Lofi -->
   <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
   </audio>
@@ -303,20 +302,20 @@
     <p class="bio">Welcome to my space ✨</p>
 
     <div class="links">
-      <!-- Thay link Facebook của bạn vào href -->
-      <a href="https://facebook.com" target="_blank" class="liquid-glass-btn btn-fb">
+      <!-- Đã gắn link Facebook của bạn -->
+      <a href="https://www.facebook.com/toilaquang0/" target="_blank" class="liquid-glass-btn btn-fb">
         <span>Facebook</span>
       </a>
 
-      <!-- Thay username Telegram của bạn vào href -->
-      <a href="https://t.me/" target="_blank" class="liquid-glass-btn btn-tele">
+      <!-- Đã gắn link Telegram từ @concacbulon -->
+      <a href="https://t.me/concacbulon" target="_blank" class="liquid-glass-btn btn-tele">
         <span>Telegram</span>
       </a>
     </div>
   </div>
 
   <script>
-    /* =================== ÂM THANH =================== */
+    /* ÂM THANH */
     const audio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     let hasInteracted = false;
@@ -352,7 +351,7 @@
       }
     }, { once: true });
 
-    /* =================== HOA ANH ĐÀO RƠI LIÊN TỤC =================== */
+    /* HOA ANH ĐÀO RƠI LIÊN TỤC */
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
 
