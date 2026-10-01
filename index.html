@@ -5,34 +5,222 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lê Hữu Quang - Bio Link</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px; }
-    .container { width: 100%; max-width: 420px; text-align: center; }
-    .avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; margin-bottom: 16px; }
-    h1 { font-size: 1.5rem; margin-bottom: 6px; }
-    p.bio { font-size: 0.95rem; color: #94a3b8; margin-bottom: 24px; }
-    .links { display: flex; flex-direction: column; gap: 12px; }
-    .link-btn { display: flex; align-items: center; justify-content: center; padding: 14px 20px; border-radius: 12px; text-decoration: none; font-weight: 600; color: #ffffff; background: #1e293b; border: 1px solid #334155; transition: 0.2s; }
-    .link-btn:hover { border-color: #38bdf8; background: #334155; }
-    .section-title { text-align: left; font-size: 0.85rem; text-transform: uppercase; color: #64748b; margin-top: 10px; margin-bottom: 4px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1e293b, #090d16);
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    /* Hiệu ứng xuất hiện */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hiệu ứng đĩa nhạc xoay tròn */
+    @keyframes rotateDisc {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Nút điều khiển nhạc góc trên */
+    .music-control {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .music-control.playing {
+      animation: rotateDisc 4s linear infinite;
+      border-color: #38bdf8;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      animation: fadeInUp 0.8s ease backwards;
+      animation-delay: 0.1s;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      animation: fadeInUp 0.8s ease backwards;
+      animation-delay: 0.25s;
+    }
+
+    p.bio {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 28px;
+      animation: fadeInUp 0.8s ease backwards;
+      animation-delay: 0.4s;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #ffffff;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-fb {
+      animation: fadeInUp 0.8s ease backwards;
+      animation-delay: 0.55s;
+    }
+
+    .btn-tele {
+      animation: fadeInUp 0.8s ease backwards;
+      animation-delay: 0.7s;
+    }
+
+    .link-btn:hover, .link-btn:active {
+      transform: translateY(-3px) scale(1.02);
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+    }
   </style>
 </head>
 <body>
+
+  <!-- Nút Bật/Tắt Nhạc -->
+  <div class="music-control" id="musicBtn" onclick="toggleAudio()">
+    🎵
+  </div>
+
+  <!-- File nhạc nền (bạn có thể thay link mp3 khác vào src nếu muốn) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="container">
-    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
+    <div class="avatar-wrapper">
+      <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
+    </div>
+
     <h1>Lê Hữu Quang</h1>
     <p class="bio">Welcome to my profile ✨</p>
-    <div class="links">
-      <div class="section-title">Mạng xã hội</div>
-      <a href="https://facebook.com" target="_blank" class="link-btn">Facebook</a>
-      <a href="https://instagram.com" target="_blank" class="link-btn">Instagram</a>
-      <a href="https://tiktok.com" target="_blank" class="link-btn">TikTok</a>
 
-      <div class="section-title">Âm nhạc</div>
-      <a href="https://spotify.com" target="_blank" class="link-btn">Spotify</a>
-      <a href="https://soundcloud.com" target="_blank" class="link-btn">SoundCloud</a>
+    <div class="links">
+      <!-- Thay link Facebook thực tế của bạn vào href -->
+      <a href="https://facebook.com" target="_blank" class="link-btn btn-fb">
+        Facebook
+      </a>
+
+      <!-- Thay username Telegram của bạn vào href (dạng https://t.me/ten_username) -->
+      <a href="https://t.me/" target="_blank" class="link-btn btn-tele">
+        Telegram
+      </a>
     </div>
   </div>
+
+  <script>
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    let hasInteracted = false;
+
+    function playAudio() {
+      audio.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicBtn.innerHTML = '🔊';
+      }).catch(() => {});
+    }
+
+    function toggleAudio() {
+      if (audio.paused) {
+        playAudio();
+      } else {
+        audio.pause();
+        musicBtn.classList.remove('playing');
+        musicBtn.innerHTML = '🔇';
+      }
+    }
+
+    // Tự động phát khi người dùng chạm bất kỳ đâu vào màn hình lần đầu
+    document.addEventListener('touchstart', function() {
+      if (!hasInteracted) {
+        playAudio();
+        hasInteracted = true;
+      }
+    }, { once: true });
+
+    document.addEventListener('click', function() {
+      if (!hasInteracted) {
+        playAudio();
+        hasInteracted = true;
+      }
+    }, { once: true });
+  </script>
+
 </body>
 </html>
-
