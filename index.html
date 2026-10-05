@@ -13,9 +13,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Nền chính màu đen ánh ngọc đậm (Deep Emerald Abyss) */
     body {
-      background-color: #0b0f19;
-      color: #f8fafc;
+      background-color: #031414;
+      color: #f0fdfa;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,7 +26,7 @@
       position: relative;
     }
 
-    /* Đốm sáng chuyển động khúc xạ cho Liquid Glass */
+    /* Các khối cầu ánh sáng xanh ngọc chuyển động khúc xạ */
     .bg-blobs {
       position: fixed;
       top: 0;
@@ -34,8 +35,8 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      filter: blur(80px);
-      opacity: 0.65;
+      filter: blur(85px);
+      opacity: 0.7;
     }
 
     .blob {
@@ -44,39 +45,42 @@
       animation: floatBlobs 12s infinite alternate ease-in-out;
     }
 
+    /* Đốm ngọc lục bảo sâu */
     .blob-1 {
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, #38bdf8, #0284c7);
-      top: 10%;
-      left: 15%;
-    }
-
-    .blob-2 {
       width: 320px;
       height: 320px;
-      background: radial-gradient(circle, #f43f5e, #ec4899);
-      bottom: 15%;
-      right: 10%;
+      background: radial-gradient(circle, #059669, #064e3b);
+      top: 8%;
+      left: 10%;
+    }
+
+    /* Đốm xanh ngọc lam đậm (Deep Teal) */
+    .blob-2 {
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, #0d9488, #134e4a);
+      bottom: 12%;
+      right: 8%;
       animation-delay: -5s;
     }
 
+    /* Đốm xanh đại dương ngọc lục bảo ở tâm */
     .blob-3 {
-      width: 250px;
-      height: 250px;
-      background: radial-gradient(circle, #818cf8, #6366f1);
-      top: 50%;
-      left: 40%;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, #0f766e, #022c22);
+      top: 48%;
+      left: 38%;
       animation-delay: -8s;
     }
 
     @keyframes floatBlobs {
       0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(30px, 40px) scale(1.15); }
-      100% { transform: translate(-30px, -30px) scale(0.95); }
+      50% { transform: translate(35px, 45px) scale(1.18); }
+      100% { transform: translate(-35px, -30px) scale(0.95); }
     }
 
-    /* Canvas Hoa anh đào rơi liên tục */
+    /* Canvas Hoa anh đào rơi */
     #sakura-canvas {
       position: fixed;
       top: 0;
@@ -103,7 +107,7 @@
       width: 48px;
       height: 48px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(45, 212, 191, 0.35);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -112,7 +116,7 @@
       cursor: pointer;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
       z-index: 100;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -123,8 +127,8 @@
 
     .music-control.playing {
       animation: rotateVinyl 4s linear infinite;
-      border-color: rgba(56, 189, 248, 0.6);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      border-color: rgba(45, 212, 191, 0.8);
+      box-shadow: 0 0 22px rgba(20, 184, 166, 0.5);
     }
 
     @keyframes rotateVinyl {
@@ -132,7 +136,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Hiệu ứng xuất hiện mượt mà */
+    /* Animation Xuất hiện mềm mượt */
     @keyframes springIn {
       0% {
         opacity: 0;
@@ -159,9 +163,9 @@
       width: 110px;
       height: 110px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(94, 234, 212, 0.6);
       object-fit: cover;
-      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.45);
+      box-shadow: 0 10px 30px rgba(13, 148, 136, 0.5);
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -175,16 +179,16 @@
       margin-bottom: 6px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
       animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.25s;
     }
 
     p.bio {
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(204, 251, 241, 0.75);
       margin-bottom: 30px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
       animation-delay: 0.4s;
     }
@@ -195,7 +199,7 @@
       gap: 16px;
     }
 
-    /* Hiệu ứng LIQUID GLASS (Kính thủy tinh lỏng) */
+    /* Hiệu ứng LIQUID GLASS ngọc bích */
     .liquid-glass-btn {
       position: relative;
       display: flex;
@@ -208,20 +212,21 @@
       font-weight: 600;
       font-size: 1.05rem;
       color: #ffffff;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+      
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(13, 148, 136, 0.08) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-top: 1px solid rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(94, 234, 212, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.65);
       box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4),
-        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+        0 10px 30px rgba(0, 0, 0, 0.45),
+        inset 0 1px 1px rgba(255, 255, 255, 0.45),
+        inset 0 -2px 8px rgba(4, 47, 46, 0.3);
+      
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Vệt sáng lỏng quét qua liên tục */
     .liquid-glass-btn::before {
       content: '';
       position: absolute;
@@ -233,7 +238,7 @@
         60deg, 
         transparent 0%, 
         rgba(255, 255, 255, 0.12) 30%, 
-        rgba(255, 255, 255, 0.35) 50%, 
+        rgba(255, 255, 255, 0.4) 50%, 
         rgba(255, 255, 255, 0.12) 70%, 
         transparent 100%
       );
@@ -260,18 +265,18 @@
 
     .liquid-glass-btn:hover, .liquid-glass-btn:active {
       transform: translateY(-4px) scale(1.02);
-      border-color: rgba(255, 255, 255, 0.6);
+      border-color: rgba(94, 234, 212, 0.7);
       box-shadow: 
-        0 15px 35px rgba(56, 189, 248, 0.25),
+        0 15px 35px rgba(13, 148, 136, 0.35),
         inset 0 1px 2px rgba(255, 255, 255, 0.8),
-        inset 0 -2px 10px rgba(56, 189, 248, 0.3);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+        inset 0 -2px 10px rgba(13, 148, 136, 0.4);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(20, 184, 166, 0.15) 100%);
     }
   </style>
 </head>
 <body>
 
-  <!-- Đốm sáng nền cho kính khúc xạ -->
+  <!-- Đốm sáng ngọc lục bảo sâu cho kính khúc xạ -->
   <div class="bg-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
