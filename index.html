@@ -45,7 +45,6 @@
       animation: floatBlobs 12s infinite alternate ease-in-out;
     }
 
-    /* Đốm ngọc lục bảo sâu */
     .blob-1 {
       width: 320px;
       height: 320px;
@@ -54,7 +53,6 @@
       left: 10%;
     }
 
-    /* Đốm xanh ngọc lam đậm (Deep Teal) */
     .blob-2 {
       width: 340px;
       height: 340px;
@@ -64,7 +62,6 @@
       animation-delay: -5s;
     }
 
-    /* Đốm xanh đại dương ngọc lục bảo ở tâm */
     .blob-3 {
       width: 260px;
       height: 260px;
@@ -80,7 +77,7 @@
       100% { transform: translate(-35px, -30px) scale(0.95); }
     }
 
-    /* Canvas Hoa anh đào rơi */
+    /* Canvas Cánh hoa trắng rơi */
     #sakura-canvas {
       position: fixed;
       top: 0;
@@ -199,7 +196,7 @@
       gap: 16px;
     }
 
-    /* Hiệu ứng LIQUID GLASS ngọc bích */
+    /* Hiệu ứng LIQUID GLASS */
     .liquid-glass-btn {
       position: relative;
       display: flex;
@@ -276,14 +273,14 @@
 </head>
 <body>
 
-  <!-- Đốm sáng ngọc lục bảo sâu cho kính khúc xạ -->
+  <!-- Đốm sáng nền -->
   <div class="bg-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
 
-  <!-- Hoa anh đào rơi liên tục -->
+  <!-- Hoa màu trắng rơi liên tục -->
   <canvas id="sakura-canvas"></canvas>
 
   <!-- Nút Nhạc -->
@@ -352,7 +349,7 @@
       }
     }, { once: true });
 
-    /* =================== HOA ANH ĐÀO RƠI LIÊN TỤC =================== */
+    /* =================== CÁNH HOA TRẮNG THẬT (KHÔNG PHẢI TRÁI TIM) =================== */
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -364,7 +361,7 @@
       height = canvas.height = window.innerHeight;
     });
 
-    const petalCount = 35;
+    const petalCount = 38;
     const petals = [];
 
     class Petal {
@@ -375,20 +372,22 @@
       reset(init = false) {
         this.x = Math.random() * width;
         this.y = init ? Math.random() * height : -20;
-        this.size = Math.random() * 9 + 8;
-        this.speedY = Math.random() * 1.4 + 1.1;
-        this.speedX = Math.random() * 1.5 - 0.75;
+        this.length = Math.random() * 8 + 10; // Chiều dài cánh hoa
+        this.width = this.length * (Math.random() * 0.2 + 0.45); // Độ thon gọn
+        this.speedY = Math.random() * 1.3 + 0.9;
+        this.speedX = Math.random() * 1.4 - 0.7;
         this.angle = Math.random() * 360;
-        this.spin = (Math.random() - 0.5) * 1.8;
+        this.spin = (Math.random() - 0.5) * 1.6;
         this.flip = Math.random();
-        this.flipSpeed = Math.random() * 0.02 + 0.01;
-        this.color = Math.random() > 0.4 ? 'rgba(255, 183, 197, ' : 'rgba(255, 218, 224, ';
-        this.alpha = Math.random() * 0.4 + 0.55;
+        this.flipSpeed = Math.random() * 0.025 + 0.015;
+        // Màu trắng tinh khôi & trắng ánh ngọc
+        this.color = Math.random() > 0.3 ? 'rgba(255, 255, 255, ' : 'rgba(240, 253, 250, ';
+        this.alpha = Math.random() * 0.4 + 0.5;
       }
 
       update() {
         this.y += this.speedY;
-        this.x += this.speedX + Math.sin(this.y * 0.008) * 0.7;
+        this.x += this.speedX + Math.sin(this.y * 0.007) * 0.75;
         this.angle += this.spin;
         this.flip += this.flipSpeed;
 
@@ -403,13 +402,15 @@
         ctx.rotate((this.angle * Math.PI) / 180);
         ctx.scale(1, Math.sin(this.flip));
 
+        // Vẽ cánh hoa dạng thon giọt nước / bầu dục tự nhiên
         ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
-        ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+        ctx.moveTo(0, -this.length / 2);
+        ctx.bezierCurveTo(this.width, -this.length / 4, this.width, this.length / 3, 0, this.length / 2);
+        ctx.bezierCurveTo(-this.width, this.length / 3, -this.width, -this.length / 4, 0, -this.length / 2);
+        
         ctx.fillStyle = this.color + this.alpha + ')';
-        ctx.shadowColor = 'rgba(255, 183, 197, 0.4)';
-        ctx.shadowBlur = 6;
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.45)';
+        ctx.shadowBlur = 5;
         ctx.fill();
         ctx.restore();
       }
@@ -433,3 +434,4 @@
 
 </body>
 </html>
+
