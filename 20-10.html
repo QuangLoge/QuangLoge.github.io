@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc mừng 20/10</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050510; /* Nền tối giống video */
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng nền sao đơn giản */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* Nút bắt đầu (Vì trình duyệt web không cho phép tự động phát nhạc) */
+        #start-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #0ff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Container chứa 2 khối vuông phát sáng */
+        .eyes-container {
+            display: none; /* Ẩn lúc đầu */
+            gap: 20px;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .eye-block {
+            width: 40px;
+            height: 40px;
+            background-color: #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            animation: blink 4s infinite alternate;
+        }
+
+        /* Text hiển thị */
+        #lyrics {
+            display: none;
+            font-size: 20px;
+            text-align: center;
+            max-width: 80%;
+            min-height: 30px;
+            z-index: 2;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px white;
+        }
+
+        /* Hình ảnh minh họa (Bạn có thể thêm hình của bạn vào đây) */
+        #bg-image {
+            position: absolute;
+            bottom: 0;
+            max-width: 100%;
+            max-height: 50vh;
+            opacity: 0;
+            transition: opacity 2s;
+            z-index: 1;
+        }
+
+        @keyframes blink {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    
+    <!-- Hình ảnh minh họa sẽ xuất hiện theo thời gian -->
+    <img id="bg-image" src="" alt="background art">
+
+    <!-- Nút bắt đầu để lách luật Auto-play nhạc của trình duyệt -->
+    <button id="start-btn">Nhấn vào đây để bắt đầu</button>
+
+    <!-- 2 khối vuông màu xanh lơ -->
+    <div class="eyes-container" id="eyes">
+        <div class="eye-block"></div>
+        <div class="eye-block"></div>
+    </div>
+
+    <!-- Nơi hiển thị chữ -->
+    <div id="lyrics"></div>
+
+    <!-- Thẻ âm thanh -->
+    <!-- BẠN CẦN THAY FILE NHẠC CỦA BẠN VÀO src DƯỚI ĐÂY -->
+    <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const eyes = document.getElementById('eyes');
+        const lyricsBox = document.getElementById('lyrics');
+        const music = document.getElementById('bg-music');
+        const bgImage = document.getElementById('bg-image');
+
+        // Kịch bản chữ chạy (Nội dung và Thời gian xuất hiện tính bằng mili-giây)
+        const script = [
+            { time: 0, text: "Hôm nay tớ nhận lệnh từ Dr D là để..." },
+            { time: 4000, text: "ui cậu đẹp quá" },
+            { time: 7000, text: "à thì cũng sắp 20/10 rồi" },
+            { time: 10000, text: "nên là tớ muốn..." },
+            { time: 13000, text: "chúc cậu thật nhiều sức khỏe" },
+            { time: 16000, text: "và chúc cậu luôn giữ nụ cười trên môi" },
+            { time: 19000, text: "vì mình có làm được đâu" },
+            { time: 22000, text: "nhưng ai khác bên em là" },
+            { time: 25000, text: "nhường đi hết tất cả..." }
+        ];
+
+        startBtn.addEventListener('click', () => {
+            // Ẩn nút bắt đầu, hiện hiệu ứng
+            startBtn.style.display = 'none';
+            eyes.style.display = 'flex';
+            lyricsBox.style.display = 'block';
+            
+            // Phát nhạc
+            music.play();
+
+            // Chạy kịch bản text
+            script.forEach(line => {
+                setTimeout(() => {
+                    typeWriter(line.text);
+                    
+                    // Ví dụ: Hiện hình ảnh ở giây thứ 7 (chữ 20/10)
+                    if(line.time === 7000) {
+                        // Thay link ảnh của bạn vào đây (link ảnh cô gái áo dài chẳng hạn)
+                        bgImage.src = "https://i.pinimg.com/originals/59/54/b4/5954b408c66525ad932faa693a647e3f.jpg"; 
+                        bgImage.style.opacity = "0.4";
+                    }
+                }, line.time);
+            });
+        });
+
+        // Hàm tạo hiệu ứng gõ chữ
+        function typeWriter(text) {
+            lyricsBox.innerHTML = '';
+            let i = 0;
+            const speed = 50; // Tốc độ gõ chữ
+
+            function type() {
+                if (i < text.length) {
+                    lyricsBox.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
