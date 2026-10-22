@@ -204,7 +204,6 @@
       font-weight: 600;
       font-size: 1.05rem;
       color: #ffffff;
-      
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(13, 148, 136, 0.08) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -214,7 +213,6 @@
         0 10px 30px rgba(0, 0, 0, 0.45),
         inset 0 1px 1px rgba(255, 255, 255, 0.45),
         inset 0 -2px 8px rgba(4, 47, 46, 0.3);
-      
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -283,7 +281,9 @@
 
   <div class="music-control" id="musicBtn">🎵</div>
 
+  <!-- Hỗ trợ cả 2 tên file thường gặp khi bạn tải về -->
   <audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
+    <source src="music.mp3.mp3" type="audio/mpeg">
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
@@ -311,7 +311,7 @@
   </div>
 
   <script>
-    /* =================== ÂM THANH XỬ LÝ CHUẨN IOS =================== */
+    /* =================== XỬ LÝ ÂM THANH =================== */
     const audio = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     let hasInteracted = false;
@@ -321,7 +321,9 @@
         musicBtn.classList.add('playing');
         musicBtn.innerHTML = '🔊';
       }).catch((err) => {
-        console.log("Trình duyệt chặn phát:", err);
+        console.log("Lỗi tải/phát âm thanh:", err);
+        musicBtn.classList.remove('playing');
+        musicBtn.innerHTML = '🔇';
       });
     }
 
@@ -363,7 +365,7 @@
     window.addEventListener('touchstart', firstUserInteraction, { passive: true });
     window.addEventListener('click', firstUserInteraction);
 
-    /* =================== HIỆU ỨNG CÁNH HOA =================== */
+    /* =================== CÁNH HOA RƠI =================== */
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
 
