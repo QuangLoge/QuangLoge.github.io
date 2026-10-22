@@ -260,6 +260,11 @@
       animation-delay: 0.7s;
     }
 
+    .btn-tiktok {
+      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
+      animation-delay: 0.85s;
+    }
+
     .liquid-glass-btn:hover, .liquid-glass-btn:active {
       transform: translateY(-4px) scale(1.02);
       border-color: rgba(94, 234, 212, 0.7);
@@ -288,9 +293,9 @@
     🎵
   </div>
 
-  <!-- Nhạc nền Lofi -->
+  <!-- Nhạc nền đính kèm: Đặt file nhạc cùng thư mục và đặt tên là music.mp3 hoặc đổi theo tên file của bạn -->
   <audio id="bgMusic" loop preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
   <div class="container">
@@ -308,6 +313,10 @@
 
       <a href="https://t.me/concacbulon" target="_blank" class="liquid-glass-btn btn-tele">
         <span>Telegram</span>
+      </a>
+
+      <a href="https://www.tiktok.com/@toilaquang08" target="_blank" class="liquid-glass-btn btn-tiktok">
+        <span>TikTok</span>
       </a>
     </div>
   </div>
@@ -372,15 +381,14 @@
       reset(init = false) {
         this.x = Math.random() * width;
         this.y = init ? Math.random() * height : -20;
-        this.length = Math.random() * 8 + 10; // Chiều dài cánh hoa
-        this.width = this.length * (Math.random() * 0.2 + 0.45); // Độ thon gọn
+        this.length = Math.random() * 8 + 10;
+        this.width = this.length * (Math.random() * 0.2 + 0.45);
         this.speedY = Math.random() * 1.3 + 0.9;
         this.speedX = Math.random() * 1.4 - 0.7;
         this.angle = Math.random() * 360;
         this.spin = (Math.random() - 0.5) * 1.6;
         this.flip = Math.random();
         this.flipSpeed = Math.random() * 0.025 + 0.015;
-        // Màu trắng tinh khôi & trắng ánh ngọc
         this.color = Math.random() > 0.3 ? 'rgba(255, 255, 255, ' : 'rgba(240, 253, 250, ';
         this.alpha = Math.random() * 0.4 + 0.5;
       }
@@ -402,7 +410,6 @@
         ctx.rotate((this.angle * Math.PI) / 180);
         ctx.scale(1, Math.sin(this.flip));
 
-        // Vẽ cánh hoa dạng thon giọt nước / bầu dục tự nhiên
         ctx.beginPath();
         ctx.moveTo(0, -this.length / 2);
         ctx.bezierCurveTo(this.width, -this.length / 4, this.width, this.length / 3, 0, this.length / 2);
@@ -434,4 +441,3 @@
 
 </body>
 </html>
-
