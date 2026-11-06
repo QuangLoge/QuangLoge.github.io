@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lê Hữu Quang - Bio Link</title>
+  <title>Lê Hữu Quang - Space</title>
+  <!-- Thêm thư viện FontAwesome để hiện các icon menu -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -14,316 +16,292 @@
     }
 
     body {
-      /* Nền Gradient tối màu chuyển động mượt mà */
       background: linear-gradient(-45deg, #090a0f, #1b2735, #0d1b2a, #031414);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
-
       color: #f0fdfa;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 24px;
       overflow: hidden;
       position: relative;
     }
 
-    /* Hiệu ứng chuyển động cho nền */
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
+    /* ================= MÀN HÌNH CHÀO ĐẦU TRANG (INTRO) ================= */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at center, rgba(13, 27, 42, 0.85) 0%, rgba(3, 10, 15, 0.98) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+    }
+
+    #intro-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.08);
+      pointer-events: none;
+    }
+
+    .intro-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 2px solid rgba(94, 234, 212, 0.6);
+      box-shadow: 0 0 30px rgba(45, 212, 191, 0.4);
+      margin-bottom: 18px;
+      animation: pulseGlow 2.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 15px rgba(45, 212, 191, 0.3); }
+      to { box-shadow: 0 0 35px rgba(45, 212, 191, 0.75); }
+    }
+
+    .intro-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .intro-sub {
+      font-size: 0.95rem;
+      color: rgba(204, 251, 241, 0.7);
+      margin-bottom: 32px;
+    }
+
+    .enter-btn {
+      padding: 15px 36px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.25), rgba(13, 148, 136, 0.4));
+      border: 1px solid rgba(94, 234, 212, 0.6);
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(13, 148, 136, 0.4);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .enter-btn:hover, .enter-btn:active {
+      transform: translateY(-3px) scale(1.04);
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.4), rgba(13, 148, 136, 0.6));
+      box-shadow: 0 15px 35px rgba(45, 212, 191, 0.6);
+    }
+
+    /* ================= NỘI DUNG CHÍNH & MENU CỦA ÔNG ================= */
+    .night {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     #sakura-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     }
 
-    .container {
-      width: 100%;
-      max-width: 390px;
-      text-align: center;
+    .main-content {
       position: relative;
       z-index: 10;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
     }
 
-    .music-control {
+    .main-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Nút Menu nổi góc dưới phải (hoặc tùy chỉnh vị trí) */
+    .menu-container {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 48px;
-      height: 48px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(45, 212, 191, 0.35);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      cursor: pointer;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      bottom: 28px;
+      right: 28px;
       z-index: 100;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      user-select: none;
-    }
-
-    .music-control:active {
-      transform: scale(0.9);
-    }
-
-    .music-control.playing {
-      animation: rotateVinyl 4s linear infinite;
-      border-color: rgba(45, 212, 191, 0.8);
-      box-shadow: 0 0 22px rgba(20, 184, 166, 0.5);
-    }
-
-    @keyframes rotateVinyl {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes springIn {
-      0% {
-        opacity: 0;
-        transform: translateY(45px) scale(0.92);
-      }
-      70% {
-        opacity: 1;
-        transform: translateY(-4px) scale(1.01);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .avatar-wrapper {
-      display: inline-block;
-      position: relative;
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.1s;
-    }
-
-    .avatar {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 2px solid rgba(94, 234, 212, 0.6);
-      object-fit: cover;
-      box-shadow: 0 10px 30px rgba(13, 148, 136, 0.5);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .avatar:hover {
-      transform: scale(1.08) rotate(2deg);
-    }
-
-    h1 {
-      font-size: 1.65rem;
-      margin-top: 16px;
-      margin-bottom: 6px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.25s;
-    }
-
-    p.bio {
-      font-size: 0.95rem;
-      color: rgba(204, 251, 241, 0.75);
-      margin-bottom: 30px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.4s;
-    }
-
-    .links {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      align-items: center;
+      gap: 12px;
     }
 
-    .liquid-glass-btn {
-      position: relative;
+    .menu-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(15px) scale(0.9);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .menu-options.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .menu-option, .menu-trigger {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(94, 234, 212, 0.35);
+      color: #f0fdfa;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 18px 24px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.05rem;
-      color: #ffffff;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(13, 148, 136, 0.08) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(94, 234, 212, 0.25);
-      border-top: 1px solid rgba(255, 255, 255, 0.65);
-      box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.45),
-        inset 0 1px 1px rgba(255, 255, 255, 0.45),
-        inset 0 -2px 8px rgba(4, 47, 46, 0.3);
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
     }
 
-    .liquid-glass-btn::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -80%;
-      width: 50%;
-      height: 200%;
-      background: linear-gradient(
-        60deg, 
-        transparent 0%, 
-        rgba(255, 255, 255, 0.12) 30%, 
-        rgba(255, 255, 255, 0.4) 50%, 
-        rgba(255, 255, 255, 0.12) 70%, 
-        transparent 100%
-      );
-      transform: rotate(25deg);
-      animation: liquidSheen 4.5s infinite ease-in-out;
-      pointer-events: none;
+    .menu-option:hover, .menu-trigger:hover {
+      background: rgba(45, 212, 191, 0.25);
+      border-color: rgba(94, 234, 212, 0.8);
+      transform: scale(1.08);
     }
 
-    @keyframes liquidSheen {
-      0% { left: -80%; }
-      35% { left: 140%; }
-      100% { left: 140%; }
-    }
-
-    .btn-fb {
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.55s;
-    }
-
-    .btn-tele {
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.7s;
-    }
-
-    .btn-tiktok {
-      animation: springIn 1s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-      animation-delay: 0.85s;
-    }
-
-    .liquid-glass-btn:hover, .liquid-glass-btn:active {
-      transform: translateY(-4px) scale(1.02);
-      border-color: rgba(94, 234, 212, 0.7);
-      box-shadow: 
-        0 15px 35px rgba(13, 148, 136, 0.35),
-        inset 0 1px 2px rgba(255, 255, 255, 0.8),
-        inset 0 -2px 10px rgba(13, 148, 136, 0.4);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(20, 184, 166, 0.15) 100%);
+    .menu-trigger {
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.3), rgba(13, 148, 136, 0.4));
     }
   </style>
 </head>
 <body>
 
+  <!-- 1. MÀN HÌNH ĐẦU TRANG (HIỆN RA TRƯỚC TIÊN) -->
+  <div id="intro-screen">
+    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="intro-avatar">
+    <h1 class="intro-title">Lê Hữu Quang</h1>
+    <p class="intro-sub">Chạm để bước vào không gian của tôi ✨</p>
+    <button class="enter-btn" id="enterBtn">
+      <span>Khám phá ngay</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- 2. NỀN & HIỆU ỨNG -->
+  <div class="night"></div>
   <canvas id="sakura-canvas"></canvas>
 
-  <div class="music-control" id="musicBtn">🎵</div>
+  <!-- ÂM THANH (Đã sửa chuẩn cú pháp) -->
+  <audio id="bgMusic" loop src="./style/nhac.mp3"></audio>
+  <audio id="popSound" src="./style/pop.mp3"></audio>
 
-  <!-- Hỗ trợ cả 2 tên file thường gặp khi bạn tải về -->
-  <audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
-    <source src="music.mp3.mp3" type="audio/mpeg">
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+  <!-- 3. GIAO DIỆN CHÍNH SAU KHI BẤM VÀO ĐẦU TRANG -->
+  <div class="main-content" id="mainContent">
+    <h2>Welcome to my space ✨</h2>
+    <p style="margin-top: 8px; opacity: 0.75;">(Nơi chứa nội dung chính / hiệu ứng của ông)</p>
+  </div>
 
-  <div class="container">
-    <div class="avatar-wrapper">
-      <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
+  <!-- 4. MENU CỦA ÔNG (ĐÃ SỬA LỖI CÚ PHÁP) -->
+  <div class="menu-container">
+    <div class="menu-options" id="menuOptions">
+      <div class="menu-option" id="messageBtn" title="Lời nhắn">
+        <i class="fa-regular fa-comment-dots"></i>
+      </div>
+      <div class="menu-option" id="giftBtn" title="Ảnh">
+        <i class="fa-solid fa-gift"></i>
+      </div>
+      <div class="menu-option" id="musicBtn" title="Nhạc">
+        <i class="fa-regular fa-circle-pause"></i>
+      </div>
+      <div class="menu-option" id="settingsBtn" title="Icon">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </div>
     </div>
-
-    <h1>Lê Hữu Quang</h1>
-    <p class="bio">Welcome to my space ✨</p>
-
-    <div class="links">
-      <a href="https://www.facebook.com/toilaquang0/" target="_blank" class="liquid-glass-btn btn-fb">
-        <span>Facebook</span>
-      </a>
-
-      <a href="https://t.me/concacbulon" target="_blank" class="liquid-glass-btn btn-tele">
-        <span>Telegram</span>
-      </a>
-
-      <a href="https://www.tiktok.com/@toilaquang08" target="_blank" class="liquid-glass-btn btn-tiktok">
-        <span>TikTok</span>
-      </a>
+    <div class="menu-trigger" id="menuTrigger">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
     </div>
   </div>
 
   <script>
-    /* =================== XỬ LÝ ÂM THANH =================== */
-    const audio = document.getElementById('bgMusic');
+    const introScreen = document.getElementById('intro-screen');
+    const enterBtn = document.getElementById('enterBtn');
+    const mainContent = document.getElementById('mainContent');
+    const bgMusic = document.getElementById('bgMusic');
+    const popSound = document.getElementById('popSound');
+    const menuTrigger = document.getElementById('menuTrigger');
+    const menuOptions = document.getElementById('menuOptions');
     const musicBtn = document.getElementById('musicBtn');
-    let hasInteracted = false;
 
-    function startPlaying() {
-      audio.play().then(() => {
-        musicBtn.classList.add('playing');
-        musicBtn.innerHTML = '🔊';
-      }).catch((err) => {
-        console.log("Lỗi tải/phát âm thanh:", err);
-        musicBtn.classList.remove('playing');
-        musicBtn.innerHTML = '🔇';
+    // Hàm phát tiếng pop khi bấm nút
+    function playPop() {
+      if (popSound) {
+        popSound.currentTime = 0;
+        popSound.play().catch(() => {});
+      }
+    }
+
+    // Xử lý khi bấm nút ở Đầu Trang -> Ẩn Intro, hiện trang chính & bật nhạc
+    enterBtn.addEventListener('click', () => {
+      playPop();
+      introScreen.classList.add('hidden');
+      mainContent.classList.add('visible');
+
+      bgMusic.play().then(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+      }).catch(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
       });
-    }
+    });
 
-    function stopPlaying() {
-      audio.pause();
-      musicBtn.classList.remove('playing');
-      musicBtn.innerHTML = '🔇';
-    }
+    // Đóng / Mở Menu
+    menuTrigger.addEventListener('click', () => {
+      playPop();
+      menuOptions.classList.toggle('active');
+    });
 
-    function handleMusicBtn(e) {
-      if (e) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-      hasInteracted = true;
-
-      if (audio.paused) {
-        startPlaying();
+    // Bật / Tắt Nhạc trong Menu
+    musicBtn.addEventListener('click', () => {
+      playPop();
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
       } else {
-        stopPlaying();
+        bgMusic.pause();
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
       }
-    }
+    });
 
-    musicBtn.addEventListener('click', handleMusicBtn);
-    musicBtn.addEventListener('touchend', handleMusicBtn);
-
-    function firstUserInteraction(e) {
-      if (musicBtn.contains(e.target)) return;
-
-      if (!hasInteracted) {
-        startPlaying();
-        hasInteracted = true;
+    // Phát tiếng pop cho các nút còn lại trong menu
+    document.querySelectorAll('.menu-option').forEach(btn => {
+      if (btn.id !== 'musicBtn') {
+        btn.addEventListener('click', playPop);
       }
+    });
 
-      window.removeEventListener('touchstart', firstUserInteraction);
-      window.removeEventListener('click', firstUserInteraction);
-    }
-
-    window.addEventListener('touchstart', firstUserInteraction, { passive: true });
-    window.addEventListener('click', firstUserInteraction);
-
-    /* =================== CÁNH HOA RƠI =================== */
+    /* =================== HIỆU ỨNG CÁNH HOA RƠI =================== */
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
-
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
@@ -332,73 +310,30 @@
       height = canvas.height = window.innerHeight;
     });
 
-    const petalCount = 38;
-    const petals = [];
+    const petals = Array.from({ length: 35 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 4 + 3,
+      speedY: Math.random() * 1.2 + 0.8,
+      speedX: Math.random() * 1 - 0.5
+    }));
 
-    class Petal {
-      constructor() {
-        this.reset(true);
-      }
-
-      reset(init = false) {
-        this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : -20;
-        this.length = Math.random() * 8 + 10;
-        this.width = this.length * (Math.random() * 0.2 + 0.45);
-        this.speedY = Math.random() * 1.3 + 0.9;
-        this.speedX = Math.random() * 1.4 - 0.7;
-        this.angle = Math.random() * 360;
-        this.spin = (Math.random() - 0.5) * 1.6;
-        this.flip = Math.random();
-        this.flipSpeed = Math.random() * 0.025 + 0.015;
-        this.color = Math.random() > 0.3 ? 'rgba(255, 255, 255, ' : 'rgba(240, 253, 250, ';
-        this.alpha = Math.random() * 0.4 + 0.5;
-      }
-
-      update() {
-        this.y += this.speedY;
-        this.x += this.speedX + Math.sin(this.y * 0.007) * 0.75;
-        this.angle += this.spin;
-        this.flip += this.flipSpeed;
-
-        if (this.y > height + 25 || this.x < -30 || this.x > width + 30) {
-          this.reset(false);
-        }
-      }
-
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.angle * Math.PI) / 180);
-        ctx.scale(1, Math.sin(this.flip));
-
-        ctx.beginPath();
-        ctx.moveTo(0, -this.length / 2);
-        ctx.bezierCurveTo(this.width, -this.length / 4, this.width, this.length / 3, 0, this.length / 2);
-        ctx.bezierCurveTo(-this.width, this.length / 3, -this.width, -this.length / 4, 0, -this.length / 2);
-        
-        ctx.fillStyle = this.color + this.alpha + ')';
-        ctx.shadowColor = 'rgba(255, 255, 255, 0.45)';
-        ctx.shadowBlur = 5;
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < petalCount; i++) {
-      petals.push(new Petal());
-    }
-
-    function animateSakura() {
+    function drawPetals() {
       ctx.clearRect(0, 0, width, height);
-      petals.forEach(petal => {
-        petal.update();
-        petal.draw();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+      petals.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y > height) p.y = -10;
+        if (p.x > width) p.x = 0;
+        if (p.x < 0) p.x = width;
       });
-      requestAnimationFrame(animateSakura);
+      requestAnimationFrame(drawPetals);
     }
-
-    animateSakura();
+    drawPetals();
   </script>
 </body>
 </html>
