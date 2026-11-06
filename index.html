@@ -18,7 +18,7 @@
     }
 
     body {
-      background-color: #020111; /* Đen xanh đêm */
+      background-color: #020111;
       color: #f0fdfa;
       display: flex;
       justify-content: center;
@@ -28,13 +28,58 @@
       position: relative;
     }
 
+    /* === MÀN HÌNH START ĐẦU TIÊN === */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(27, 39, 53, 0.8) 0%, rgba(9, 10, 15, 0.95) 100%);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+    }
+
+    #intro-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+
+    .start-btn {
+      padding: 18px 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(94, 234, 212, 0.5);
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(94, 234, 212, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      animation: pulseStart 2s infinite alternate;
+    }
+
+    .start-btn:hover {
+      background: rgba(94, 234, 212, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(94, 234, 212, 0.6);
+    }
+
+    @keyframes pulseStart {
+      0% { box-shadow: 0 0 15px rgba(94, 234, 212, 0.2); }
+      100% { box-shadow: 0 0 35px rgba(94, 234, 212, 0.6); }
+    }
+
     /* === LỚP 1: BẦU TRỜI ĐÊM VÀ SAO === */
     .night-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
       background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
       z-index: 0;
     }
@@ -54,22 +99,29 @@
     /* === LỚP 2: HIỆU ỨNG HOA RƠI === */
     #sakura-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     }
 
     /* === LỚP 3: NỘI DUNG BIO CỦA ÔNG === */
-    .container {
+    .main-wrapper {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+      pointer-events: none; /* Không cho bấm khi chưa hiện */
       width: 100%;
       max-width: 390px;
       text-align: center;
       position: relative;
       z-index: 10;
       padding: 24px;
+    }
+
+    .main-wrapper.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .avatar {
@@ -101,7 +153,6 @@
       margin-bottom: 25px;
     }
 
-    /* Các nút link trong suốt */
     .links {
       display: flex;
       flex-direction: column;
@@ -141,6 +192,14 @@
       flex-direction: column;
       align-items: center;
       gap: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease 0.5s;
+    }
+
+    .menu-container.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .menu-options {
@@ -188,6 +247,11 @@
 </head>
 <body>
 
+  <!-- 1. MÀN HÌNH START (Che phủ tất cả ban đầu) -->
+  <div id="intro-screen">
+    <button class="start-btn" id="startBtn">START</button>
+  </div>
+
   <!-- Audio -->
   <audio id="bgMusic" loop src="./style/nhac.mp3"></audio>
   <audio id="popSound" src="./style/pop.mp3"></audio>
@@ -198,8 +262,8 @@
   <!-- Lớp Hoa rơi -->
   <canvas id="sakura-canvas"></canvas>
 
-  <!-- Lớp Nội dung chính -->
-  <div class="container">
+  <!-- 2. NỘI DUNG CHÍNH (Bị ẩn ban đầu) -->
+  <div class="main-wrapper" id="mainWrapper">
     <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
     <h1>Lê Hữu Quang</h1>
     <p class="bio">Welcome to my space ✨</p>
@@ -211,12 +275,12 @@
     </div>
   </div>
 
-  <!-- Lớp Menu -->
-  <div class="menu-container">
+  <!-- 3. MENU (Bị ẩn ban đầu) -->
+  <div class="menu-container" id="menuContainer">
     <div class="menu-options" id="menuOptions">
       <div class="menu-option" id="messageBtn" title="Lời nhắn"><i class="fa-regular fa-comment-dots"></i></div>
       <div class="menu-option" id="giftBtn" title="Ảnh"><i class="fa-solid fa-gift"></i></div>
-      <div class="menu-option" id="musicBtn" title="Nhạc"><i class="fa-regular fa-circle-play"></i></div>
+      <div class="menu-option" id="musicBtn" title="Nhạc"><i class="fa-regular fa-circle-pause"></i></div>
       <div class="menu-option" id="settingsBtn" title="Cài đặt"><i class="fa-regular fa-pen-to-square"></i></div>
     </div>
     <div class="menu-trigger" id="menuTrigger">
@@ -225,7 +289,44 @@
   </div>
 
   <script>
-    // 1. TẠO SAO TRÊN BẦU TRỜI
+    // ================= XỬ LÝ NÚT START & ÂM THANH =================
+    const introScreen = document.getElementById('intro-screen');
+    const startBtn = document.getElementById('startBtn');
+    const mainWrapper = document.getElementById('mainWrapper');
+    const menuContainer = document.getElementById('menuContainer');
+    
+    const bgMusic = document.getElementById('bgMusic');
+    const popSound = document.getElementById('popSound');
+    const musicBtn = document.getElementById('musicBtn');
+
+    function playPop() {
+      if(popSound) {
+        popSound.currentTime = 0;
+        popSound.play().catch(()=>{});
+      }
+    }
+
+    // Khi bấm START -> Ẩn màn chào -> Hiện nội dung -> Bật nhạc
+    startBtn.addEventListener('click', () => {
+      playPop();
+      
+      // Ẩn lớp Intro
+      introScreen.classList.add('hidden');
+      
+      // Hiện nội dung & menu
+      mainWrapper.classList.add('visible');
+      menuContainer.classList.add('visible');
+
+      // Play nhạc
+      bgMusic.play().then(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+      }).catch(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
+      });
+    });
+
+
+    // ================= TẠO SAO TRÊN BẦU TRỜI =================
     const starsContainer = document.getElementById('stars-container');
     for (let i = 0; i < 80; i++) {
       let star = document.createElement('div');
@@ -239,7 +340,7 @@
       starsContainer.appendChild(star);
     }
 
-    // 2. HIỆU ỨNG CÁNH HOA / TUYẾT RƠI
+    // ================= HIỆU ỨNG CÁNH HOA / TUYẾT RƠI =================
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
@@ -276,19 +377,9 @@
     }
     drawParticles();
 
-    // 3. XỬ LÝ MENU & ÂM THANH
+    // ================= XỬ LÝ MENU GÓC DƯỚI =================
     const menuTrigger = document.getElementById('menuTrigger');
     const menuOptions = document.getElementById('menuOptions');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    const popSound = document.getElementById('popSound');
-
-    function playPop() {
-      if(popSound) {
-        popSound.currentTime = 0;
-        popSound.play().catch(()=>{});
-      }
-    }
 
     menuTrigger.addEventListener('click', () => {
       menuOptions.classList.toggle('active');
