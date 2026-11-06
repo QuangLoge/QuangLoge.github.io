@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lê Hữu Quang - Space</title>
-  <!-- Thêm thư viện FontAwesome để hiện các icon menu -->
+  <title>Lê Hữu Quang - Bio Link</title>
+  
+  <!-- FontAwesome để hiển thị các icon trong menu -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(-45deg, #090a0f, #1b2735, #0d1b2a, #031414);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
       color: #f0fdfa;
       display: flex;
       justify-content: center;
@@ -28,121 +27,68 @@
       position: relative;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* ================= MÀN HÌNH CHÀO ĐẦU TRANG (INTRO) ================= */
-    #intro-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at center, rgba(13, 27, 42, 0.85) 0%, rgba(3, 10, 15, 0.98) 100%);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 24px;
-      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
-    }
-
-    #intro-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(1.08);
-      pointer-events: none;
-    }
-
-    .intro-avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 2px solid rgba(94, 234, 212, 0.6);
-      box-shadow: 0 0 30px rgba(45, 212, 191, 0.4);
-      margin-bottom: 18px;
-      animation: pulseGlow 2.5s infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-      from { box-shadow: 0 0 15px rgba(45, 212, 191, 0.3); }
-      to { box-shadow: 0 0 35px rgba(45, 212, 191, 0.75); }
-    }
-
-    .intro-title {
-      font-size: 1.7rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .intro-sub {
-      font-size: 0.95rem;
-      color: rgba(204, 251, 241, 0.7);
-      margin-bottom: 32px;
-    }
-
-    .enter-btn {
-      padding: 15px 36px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.25), rgba(13, 148, 136, 0.4));
-      border: 1px solid rgba(94, 234, 212, 0.6);
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(13, 148, 136, 0.4);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .enter-btn:hover, .enter-btn:active {
-      transform: translateY(-3px) scale(1.04);
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.4), rgba(13, 148, 136, 0.6));
-      box-shadow: 0 15px 35px rgba(45, 212, 191, 0.6);
-    }
-
-    /* ================= NỘI DUNG CHÍNH & MENU CỦA ÔNG ================= */
+    /* ================= BẦU TRỜI ĐÊM (Dành cho thẻ .night) ================= */
     .night {
       position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom, #020111 10%, #20124d 90%);
+      z-index: -1;
+      overflow: hidden;
     }
 
-    #sakura-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle infinite alternate;
     }
 
-    .main-content {
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; }
+    }
+
+    /* ================= GIAO DIỆN CHÍNH (BIO CỦA ÔNG) ================= */
+    .container {
+      width: 100%;
+      max-width: 390px;
+      text-align: center;
       position: relative;
       z-index: 10;
-      text-align: center;
-      padding: 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+      padding: 24px;
     }
 
-    .main-content.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 2px solid rgba(94, 234, 212, 0.6);
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(13, 148, 136, 0.5);
+      margin-bottom: 16px;
     }
 
-    /* Nút Menu nổi góc dưới phải (hoặc tùy chỉnh vị trí) */
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    p.bio {
+      font-size: 0.95rem;
+      color: rgba(204, 251, 241, 0.8);
+      margin-bottom: 30px;
+    }
+
+    /* ================= GIAO DIỆN MENU TỪ ẢNH ================= */
     .menu-container {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
+      bottom: 30px;
+      right: 30px;
       z-index: 100;
       display: flex;
       flex-direction: column;
@@ -156,8 +102,8 @@
       gap: 12px;
       opacity: 0;
       visibility: hidden;
-      transform: translateY(15px) scale(0.9);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateY(20px) scale(0.9);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .menu-options.active {
@@ -167,62 +113,51 @@
     }
 
     .menu-option, .menu-trigger {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(94, 234, 212, 0.35);
-      color: #f0fdfa;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       transition: all 0.25s ease;
     }
 
-    .menu-option:hover, .menu-trigger:hover {
-      background: rgba(45, 212, 191, 0.25);
+    .menu-trigger {
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.6), rgba(13, 148, 136, 0.8));
       border-color: rgba(94, 234, 212, 0.8);
-      transform: scale(1.08);
+      font-size: 1.4rem;
     }
 
-    .menu-trigger {
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.3), rgba(13, 148, 136, 0.4));
+    .menu-option:hover, .menu-trigger:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. MÀN HÌNH ĐẦU TRANG (HIỆN RA TRƯỚC TIÊN) -->
-  <div id="intro-screen">
-    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="intro-avatar">
-    <h1 class="intro-title">Lê Hữu Quang</h1>
-    <p class="intro-sub">Chạm để bước vào không gian của tôi ✨</p>
-    <button class="enter-btn" id="enterBtn">
-      <span>Khám phá ngay</span>
-      <i class="fa-solid fa-arrow-right"></i>
-    </button>
-  </div>
-
-  <!-- 2. NỀN & HIỆU ỨNG -->
-  <div class="night"></div>
-  <canvas id="sakura-canvas"></canvas>
-
-  <!-- ÂM THANH (Đã sửa chuẩn cú pháp) -->
+  <!-- ĐOẠN CODE ÔNG YÊU CẦU TỪ ẢNH -->
   <audio id="bgMusic" loop src="./style/nhac.mp3"></audio>
   <audio id="popSound" src="./style/pop.mp3"></audio>
+  <div class="night" id="nightSky"></div>
 
-  <!-- 3. GIAO DIỆN CHÍNH SAU KHI BẤM VÀO ĐẦU TRANG -->
-  <div class="main-content" id="mainContent">
-    <h2>Welcome to my space ✨</h2>
-    <p style="margin-top: 8px; opacity: 0.75;">(Nơi chứa nội dung chính / hiệu ứng của ông)</p>
+  <!-- NỘI DUNG TRANG BIO CỦA ÔNG -->
+  <div class="container">
+    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
+    <h1>Lê Hữu Quang</h1>
+    <p class="bio">Welcome to my space ✨</p>
+    <!-- Nếu muốn thêm nút Facebook, Tele... thì chèn vào đây -->
   </div>
 
-  <!-- 4. MENU CỦA ÔNG (ĐÃ SỬA LỖI CÚ PHÁP) -->
+  <!-- ĐOẠN MENU TỪ ẢNH -->
   <div class="menu-container">
     <div class="menu-options" id="menuOptions">
       <div class="menu-option" id="messageBtn" title="Lời nhắn">
@@ -232,7 +167,7 @@
         <i class="fa-solid fa-gift"></i>
       </div>
       <div class="menu-option" id="musicBtn" title="Nhạc">
-        <i class="fa-regular fa-circle-pause"></i>
+        <i class="fa-regular fa-circle-play"></i>
       </div>
       <div class="menu-option" id="settingsBtn" title="Icon">
         <i class="fa-regular fa-pen-to-square"></i>
@@ -244,47 +179,32 @@
   </div>
 
   <script>
-    const introScreen = document.getElementById('intro-screen');
-    const enterBtn = document.getElementById('enterBtn');
-    const mainContent = document.getElementById('mainContent');
-    const bgMusic = document.getElementById('bgMusic');
-    const popSound = document.getElementById('popSound');
+    // ================= XỬ LÝ MENU & ÂM THANH =================
     const menuTrigger = document.getElementById('menuTrigger');
     const menuOptions = document.getElementById('menuOptions');
+    const popSound = document.getElementById('popSound');
+    const bgMusic = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
 
-    // Hàm phát tiếng pop khi bấm nút
+    // Mở / Đóng Menu
+    menuTrigger.addEventListener('click', () => {
+      menuOptions.classList.toggle('active');
+      playPop();
+    });
+
+    // Phát âm thanh Pop
     function playPop() {
-      if (popSound) {
+      if(popSound) {
         popSound.currentTime = 0;
-        popSound.play().catch(() => {});
+        popSound.play().catch(e => console.log("Chưa có file pop.mp3"));
       }
     }
 
-    // Xử lý khi bấm nút ở Đầu Trang -> Ẩn Intro, hiện trang chính & bật nhạc
-    enterBtn.addEventListener('click', () => {
-      playPop();
-      introScreen.classList.add('hidden');
-      mainContent.classList.add('visible');
-
-      bgMusic.play().then(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
-      }).catch(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
-      });
-    });
-
-    // Đóng / Mở Menu
-    menuTrigger.addEventListener('click', () => {
-      playPop();
-      menuOptions.classList.toggle('active');
-    });
-
-    // Bật / Tắt Nhạc trong Menu
+    // Bật / Tắt Nhạc Nền
     musicBtn.addEventListener('click', () => {
       playPop();
       if (bgMusic.paused) {
-        bgMusic.play();
+        bgMusic.play().catch(e => console.log("Chưa có file nhac.mp3"));
         musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
       } else {
         bgMusic.pause();
@@ -292,48 +212,34 @@
       }
     });
 
-    // Phát tiếng pop cho các nút còn lại trong menu
+    // Bấm các nút khác cũng kêu tiếng Pop
     document.querySelectorAll('.menu-option').forEach(btn => {
-      if (btn.id !== 'musicBtn') {
+      if(btn.id !== 'musicBtn') {
         btn.addEventListener('click', playPop);
       }
     });
 
-    /* =================== HIỆU ỨNG CÁNH HOA RƠI =================== */
-    const canvas = document.getElementById('sakura-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    // ================= TẠO SAO CHO BẦU TRỜI ĐÊM =================
+    const nightSky = document.getElementById('nightSky');
+    const starsCount = 100;
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    const petals = Array.from({ length: 35 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 4 + 3,
-      speedY: Math.random() * 1.2 + 0.8,
-      speedX: Math.random() * 1 - 0.5
-    }));
-
-    function drawPetals() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-      petals.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-        p.y += p.speedY;
-        p.x += p.speedX;
-        if (p.y > height) p.y = -10;
-        if (p.x > width) p.x = 0;
-        if (p.x < 0) p.x = width;
-      });
-      requestAnimationFrame(drawPetals);
+    for (let i = 0; i < starsCount; i++) {
+      let star = document.createElement('div');
+      star.className = 'star';
+      
+      // Random kích thước và vị trí sao
+      let size = Math.random() * 3 + 1;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * 100}vh`;
+      
+      // Random thời gian nhấp nháy
+      star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+      star.style.animationDelay = `${Math.random() * 2}s`;
+      
+      nightSky.appendChild(star);
     }
-    drawPetals();
   </script>
 </body>
 </html>
