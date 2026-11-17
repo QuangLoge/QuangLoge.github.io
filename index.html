@@ -208,4 +208,105 @@
 <body>
 
   <!-- 1. MÀN HÌNH START -->
-  <div id="intro-
+  <div id="intro-screen">
+    <button type="button" class="start-btn" id="startBtn">START</button>
+  </div>
+
+  <!-- FILE NHẠC: Sau khi up file noel.mp3 lên GitHub, đổi src thành "./noel.mp3" -->
+  <audio id="bgMusic" loop preload="auto" playsinline>
+    <source src="./noel.mp3" type="audio/mpeg">
+    <!-- Link dự phòng nếu chưa up file noel.mp3 -->
+    <source src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Jingle_Bells_-_Kevin_MacLeod.ogg" type="audio/ogg">
+  </audio>
+
+  <!-- 2. NỀN ĐÊM + SAO -->
+  <div class="night-bg" id="stars-container"></div>
+  <canvas id="sakura-canvas"></canvas>
+
+  <!-- 3. NỘI DUNG BIO -->
+  <div class="main-wrapper" id="mainWrapper">
+    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
+    <h1>Lê Hữu Quang</h1>
+    <p class="bio">Welcome to my space ✨</p>
+    
+    <div class="links">
+      <a href="https://www.facebook.com/toilaquang0/" target="_blank" class="glass-btn">Facebook</a>
+      <a href="https://t.me/concacbulon" target="_blank" class="glass-btn">Telegram</a>
+      <a href="https://www.tiktok.com/@toilaquang08" target="_blank" class="glass-btn">TikTok</a>
+    </div>
+  </div>
+
+  <!-- 4. NÚT NHẠC -->
+  <div class="music-btn" id="musicBtn" title="Bật/Tắt nhạc">
+    <i class="fa-regular fa-circle-pause"></i>
+  </div>
+
+  <script>
+    const introScreen = document.getElementById('intro-screen');
+    const startBtn = document.getElementById('startBtn');
+    const mainWrapper = document.getElementById('mainWrapper');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+
+    bgMusic.volume = 0.8;
+
+    startBtn.addEventListener('click', () => {
+      introScreen.classList.add('hidden');
+      mainWrapper.classList.add('visible');
+      musicBtn.classList.add('visible');
+
+      bgMusic.play().then(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+      }).catch(() => {
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
+      });
+    });
+
+    musicBtn.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(() => {});
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+      } else {
+        bgMusic.pause();
+        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
+      }
+    });
+
+    // ================= TẠO SAO TRÊN BẦU TRỜI =================
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = (Math.random() * 2.5 + 1) + 'px';
+      star.style.width = size;
+      star.style.height = size;
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+      star.style.animationDelay = Math.random() * 2 + 's';
+      starsContainer.appendChild(star);
+    }
+
+    // ================= HIỆU ỨNG TUYẾT RƠI =================
+    const canvas = document.getElementById('sakura-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = Array.from({ length: 45 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 3 + 1.5,
+      speedY: Math.random() * 1 + 0.4,
+      speedX: Math.random() * 0.8 - 0.4,
+      alpha: Math.random() * 0.5 + 0.3
+    }));
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles
