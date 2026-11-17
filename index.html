@@ -32,16 +32,13 @@
     /* === MÀN HÌNH START === */
     #intro-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 9999;
       display: flex;
       justify-content: center;
       align-items: center;
       background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
 
     #intro-screen.hidden {
@@ -51,7 +48,7 @@
     }
 
     .start-btn {
-      padding: 18px 52px;
+      padding: 18px 55px;
       font-size: 1.2rem;
       font-weight: 700;
       letter-spacing: 3px;
@@ -61,7 +58,8 @@
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 0 25px rgba(94, 234, 212, 0.4);
-      transition: transform 0.2s ease, background 0.2s ease;
+      position: relative;
+      z-index: 10000;
     }
 
     .start-btn:active {
@@ -71,10 +69,7 @@
     /* === BẦU TRỜI ĐÊM VÀ SAO === */
     .night-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
       z-index: 0;
     }
@@ -91,13 +86,10 @@
       100% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* === HẠT RƠI === */
+    /* === TUYẾT RƠI === */
     #sakura-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     }
@@ -196,7 +188,7 @@
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.8s ease 0.3s, transform 0.2s ease;
+      transition: opacity 0.8s ease 0.3s;
     }
 
     .music-btn.visible {
@@ -209,15 +201,11 @@
 
   <!-- 1. MÀN HÌNH START -->
   <div id="intro-screen">
-    <button type="button" class="start-btn" id="startBtn">START</button>
+    <button type="button" class="start-btn" onclick="batDau()">START</button>
   </div>
 
-  <!-- FILE NHẠC: Sau khi up file noel.mp3 lên GitHub, đổi src thành "./noel.mp3" -->
-  <audio id="bgMusic" loop preload="auto" playsinline>
-    <source src="./noel.mp3" type="audio/mpeg">
-    <!-- Link dự phòng nếu chưa up file noel.mp3 -->
-    <source src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Jingle_Bells_-_Kevin_MacLeod.ogg" type="audio/ogg">
-  </audio>
+  <!-- FILE NHẠC (Up file noel.mp3 lên GitHub cùng chỗ với index.html) -->
+  <audio id="bgMusic" src="./noel.mp3" loop preload="none"></audio>
 
   <!-- 2. NỀN ĐÊM + SAO -->
   <div class="night-bg" id="stars-container"></div>
@@ -237,47 +225,44 @@
   </div>
 
   <!-- 4. NÚT NHẠC -->
-  <div class="music-btn" id="musicBtn" title="Bật/Tắt nhạc">
+  <div class="music-btn" id="musicBtn" onclick="batTatNhac()" title="Bật/Tắt nhạc">
     <i class="fa-regular fa-circle-pause"></i>
   </div>
 
   <script>
-    const introScreen = document.getElementById('intro-screen');
-    const startBtn = document.getElementById('startBtn');
-    const mainWrapper = document.getElementById('mainWrapper');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
+    function batDau() {
+      document.getElementById('intro-screen').classList.add('hidden');
+      document.getElementById('mainWrapper').classList.add('visible');
+      document.getElementById('musicBtn').classList.add('visible');
 
-    bgMusic.volume = 0.8;
-
-    startBtn.addEventListener('click', () => {
-      introScreen.classList.add('hidden');
-      mainWrapper.classList.add('visible');
-      musicBtn.classList.add('visible');
-
-      bgMusic.play().then(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
-      }).catch(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
+      var audio = document.getElementById('bgMusic');
+      var btn = document.getElementById('musicBtn');
+      audio.volume = 0.8;
+      audio.play().then(function() {
+        btn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+      }).catch(function() {
+        btn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
       });
-    });
+    }
 
-    musicBtn.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play().catch(() => {});
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
+    function batTatNhac() {
+      var audio = document.getElementById('bgMusic');
+      var btn = document.getElementById('musicBtn');
+      if (audio.paused) {
+        audio.play().catch(function() {});
+        btn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
       } else {
-        bgMusic.pause();
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
+        audio.pause();
+        btn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
       }
-    });
+    }
 
-    // ================= TẠO SAO TRÊN BẦU TRỜI =================
-    const starsContainer = document.getElementById('stars-container');
-    for (let i = 0; i < 80; i++) {
-      const star = document.createElement('div');
+    // Tạo sao
+    var starsContainer = document.getElementById('stars-container');
+    for (var i = 0; i < 80; i++) {
+      var star = document.createElement('div');
       star.className = 'star';
-      const size = (Math.random() * 2.5 + 1) + 'px';
+      var size = (Math.random() * 2.5 + 1) + 'px';
       star.style.width = size;
       star.style.height = size;
       star.style.left = Math.random() * 100 + '%';
@@ -287,26 +272,39 @@
       starsContainer.appendChild(star);
     }
 
-    // ================= HIỆU ỨNG TUYẾT RƠI =================
-    const canvas = document.getElementById('sakura-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    // Tuyết rơi
+    var canvas = document.getElementById('sakura-canvas');
+    var ctx = canvas.getContext('2d');
+    var width = canvas.width = window.innerWidth;
+    var height = canvas.height = window.innerHeight;
 
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', function() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     });
 
-    const particles = Array.from({ length: 45 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 3 + 1.5,
-      speedY: Math.random() * 1 + 0.4,
-      speedX: Math.random() * 0.8 - 0.4,
-      alpha: Math.random() * 0.5 + 0.3
-    }));
+    var particles = [];
+    for (var j = 0; j < 45; j++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 3 + 1.5,
+        speedY: Math.random() * 1 + 0.4,
+        speedX: Math.random() * 0.8 - 0.4,
+        alpha: Math.random() * 0.5 + 0.3
+      });
+    }
 
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
-      particles
+      for (var k = 0; k < particles.length; k++) {
+        var p = particles[k];
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + p.alpha + ')';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        if (p.y > height) p.y = -10;
+        if (p.x > width) p.x = 0;
+        if (
