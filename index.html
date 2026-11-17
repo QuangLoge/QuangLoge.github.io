@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lê Hữu Quang - Bio Link</title>
-  
-  <!-- FontAwesome icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
   <style>
     * {
       margin: 0;
@@ -17,98 +14,99 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      background-color: #020111;
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #090a0f;
       color: #f0fdfa;
+      overflow: hidden;
+    }
+
+    body {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
       position: relative;
     }
 
-    /* === MÀN HÌNH START ĐẦU TIÊN === */
+    /* === MÀN HÌNH START === */
     #intro-screen {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 9999;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, rgba(27, 39, 53, 0.8) 0%, rgba(9, 10, 15, 0.95) 100%);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+      background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+      transition: opacity 0.6s ease, visibility 0.6s ease;
     }
 
     #intro-screen.hidden {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.1);
       pointer-events: none;
     }
 
     .start-btn {
-      padding: 18px 50px;
+      padding: 18px 52px;
       font-size: 1.2rem;
       font-weight: 700;
-      letter-spacing: 2px;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(94, 234, 212, 0.5);
+      letter-spacing: 3px;
+      color: #ffffff;
+      background: rgba(94, 234, 212, 0.15);
+      border: 2px solid #5eead4;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(94, 234, 212, 0.3);
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      animation: pulseStart 2s infinite alternate;
+      box-shadow: 0 0 25px rgba(94, 234, 212, 0.4);
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
-    .start-btn:hover {
-      background: rgba(94, 234, 212, 0.2);
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(94, 234, 212, 0.6);
+    .start-btn:active {
+      transform: scale(0.95);
     }
 
-    @keyframes pulseStart {
-      0% { box-shadow: 0 0 15px rgba(94, 234, 212, 0.2); }
-      100% { box-shadow: 0 0 35px rgba(94, 234, 212, 0.6); }
-    }
-
-    /* === LỚP 1: BẦU TRỜI ĐÊM VÀ SAO === */
+    /* === BẦU TRỜI ĐÊM VÀ SAO === */
     .night-bg {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
       z-index: 0;
     }
 
     .star {
       position: absolute;
-      background: white;
+      background: #ffffff;
       border-radius: 50%;
       animation: twinkle infinite alternate ease-in-out;
     }
 
     @keyframes twinkle {
-      0% { opacity: 0.1; transform: scale(0.5); }
-      100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
+      0% { opacity: 0.2; transform: scale(0.6); }
+      100% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* === LỚP 2: HIỆU ỨNG HẠT RƠI === */
+    /* === HẠT RƠI === */
     #sakura-canvas {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
       pointer-events: none;
     }
 
-    /* === LỚP 3: NỘI DUNG BIO === */
+    /* === NỘI DUNG BIO === */
     .main-wrapper {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+      transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
       pointer-events: none;
       width: 100%;
       max-width: 390px;
@@ -128,7 +126,7 @@
       width: 110px;
       height: 110px;
       border-radius: 50%;
-      border: 2px solid rgba(94, 234, 212, 0.6);
+      border: 2px solid rgba(94, 234, 212, 0.7);
       object-fit: cover;
       box-shadow: 0 10px 30px rgba(13, 148, 136, 0.5);
       margin-bottom: 15px;
@@ -144,12 +142,12 @@
       font-size: 1.65rem;
       font-weight: 700;
       margin-bottom: 6px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     p.bio {
       font-size: 0.95rem;
-      color: rgba(204, 251, 241, 0.75);
+      color: rgba(204, 251, 241, 0.8);
       margin-bottom: 25px;
     }
 
@@ -167,22 +165,19 @@
       border-radius: 20px;
       text-decoration: none;
       font-weight: 600;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.25s ease;
     }
 
     .glass-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(94, 234, 212, 0.2);
       transform: translateY(-3px);
-      border-color: rgba(94, 234, 212, 0.5);
+      border-color: rgba(94, 234, 212, 0.6);
     }
 
-    /* === LỚP 4: NÚT NHẠC GÓC DƯỚI === */
+    /* === NÚT NHẠC === */
     .music-btn {
       position: fixed;
       bottom: 25px;
@@ -191,11 +186,9 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.6), rgba(13, 148, 136, 0.8));
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(94, 234, 212, 0.8);
-      color: #fff;
+      background: linear-gradient(135deg, #2dd4bf, #0d9488);
+      border: 1px solid #99f6e4;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -203,137 +196,16 @@
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1s ease 0.5s, transform 0.2s ease, background 0.2s ease;
+      transition: opacity 0.8s ease 0.3s, transform 0.2s ease;
     }
 
     .music-btn.visible {
       opacity: 1;
       pointer-events: auto;
     }
-
-    .music-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.1);
-    }
   </style>
 </head>
 <body>
 
   <!-- 1. MÀN HÌNH START -->
-  <div id="intro-screen">
-    <button class="start-btn" id="startBtn">START</button>
-  </div>
-
-  <!-- Audio (Nguồn Google Storage không bao giờ bị chặn hotlink) -->
-  <audio id="bgMusic" loop preload="auto" src="https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3"></audio>
-
-  <!-- Lớp nền Đêm + Sao -->
-  <div class="night-bg" id="stars-container"></div>
-  
-  <!-- Lớp Hạt rơi -->
-  <canvas id="sakura-canvas"></canvas>
-
-  <!-- 2. NỘI DUNG CHÍNH -->
-  <div class="main-wrapper" id="mainWrapper">
-    <img src="https://github.com/QuangLoge.png" alt="Avatar" class="avatar">
-    <h1>Lê Hữu Quang</h1>
-    <p class="bio">Welcome to my space ✨</p>
-    
-    <div class="links">
-      <a href="https://www.facebook.com/toilaquang0/" target="_blank" class="glass-btn">Facebook</a>
-      <a href="https://t.me/concacbulon" target="_blank" class="glass-btn">Telegram</a>
-      <a href="https://www.tiktok.com/@toilaquang08" target="_blank" class="glass-btn">TikTok</a>
-    </div>
-  </div>
-
-  <!-- 3. NÚT BẬT/TẮT NHẠC -->
-  <div class="music-btn" id="musicBtn" title="Bật/Tắt nhạc">
-    <i class="fa-regular fa-circle-pause"></i>
-  </div>
-
-  <script>
-    // ================= XỬ LÝ NÚT START & ÂM THANH =================
-    const introScreen = document.getElementById('intro-screen');
-    const startBtn = document.getElementById('startBtn');
-    const mainWrapper = document.getElementById('mainWrapper');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-
-    bgMusic.volume = 0.6;
-
-    startBtn.addEventListener('click', () => {
-      introScreen.classList.add('hidden');
-      mainWrapper.classList.add('visible');
-      musicBtn.classList.add('visible');
-
-      bgMusic.play().then(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
-      }).catch(() => {
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
-      });
-    });
-
-    // ================= TẠO SAO TRÊN BẦU TRỜI =================
-    const starsContainer = document.getElementById('stars-container');
-    for (let i = 0; i < 80; i++) {
-      let star = document.createElement('div');
-      star.className = 'star';
-      star.style.width = Math.random() * 3 + 'px';
-      star.style.height = star.style.width;
-      star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = Math.random() * 100 + 'vh';
-      star.style.animationDuration = (Math.random() * 3 + 1) + 's';
-      star.style.animationDelay = Math.random() * 2 + 's';
-      starsContainer.appendChild(star);
-    }
-
-    // ================= HIỆU ỨNG HẠT RƠI =================
-    const canvas = document.getElementById('sakura-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    const particles = Array.from({ length: 40 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 3 + 2,
-      speedY: Math.random() * 1 + 0.5,
-      speedX: Math.random() * 1 - 0.5,
-      alpha: Math.random() * 0.5 + 0.3
-    }));
-
-    function drawParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-        p.y += p.speedY;
-        p.x += p.speedX;
-        if (p.y > height) p.y = -10;
-        if (p.x > width) p.x = 0;
-        if (p.x < 0) p.x = width;
-      });
-      requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
-
-    // ================= XỬ LÝ NÚT NHẠC =================
-    musicBtn.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play().catch(() => {});
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
-      } else {
-        bgMusic.pause();
-        musicBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
-      }
-    });
-  </script>
-</body>
-</html>
+  <div id="intro-
